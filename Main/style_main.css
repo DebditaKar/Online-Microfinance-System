@@ -3,16 +3,23 @@
     margin: 0;
 }
 body{
-    background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(image3.jpg);
+    background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(../images/black1.jpg);
 	background-size: cover;
-    background-position: centre;
+    background-position: center;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     font-family: sans-serif;
+}
+.outer_form
+{
+    display: flex;
 }
 .menu_bar{
     background: rgb(0,0,0);
     text-align: right;
     z-index: 3;
+    width: 100%;
 }
 .menu_bar ul{
     display: inline-flex;
@@ -30,13 +37,13 @@ body{
     color: #fff;
 }
 .active, .menu_bar ul li:hover{
+    content: '';
    /* background: #2bab0d;*/
     border-bottom: 4px solid #fff;
 }
 .sub_menu{
     display: none;
     z-index: 3;
-
 }
 .menu_bar ul li:hover .sub_menu{
     display: block;
@@ -64,9 +71,20 @@ body{
 {
     font-style: italic;
 }
+.info_form
+{
+
+	width : 450px;
+    height: 480px;
+    position: relative;
+    padding : 5px;
+    background: transparent;
+	margin :12% 10%;
+	border-radius: 3%;
+}
 .edit_page{
-	width : 430px;
-    height: 620px;
+	width : 400px;
+    height: 720px;
     position: relative;
     padding : 5px;
     background: #fff;
@@ -139,17 +157,17 @@ body{
     margin-top: 10px;
     margin-right: 70px;
     margin-left: 10px;
-    border:2px solid rgb(0,100,0);
+    border:2px solid rgb(0,0,0);
 	background:  #fff;
     outline: none;
-    color: rgb(0,100,0);
+    color: rgb(0,0,0);
     letter-spacing: 2px;
     font-style: bold;
     border-radius: 5px;
 }
 .btn:hover{
     color: #fff;
-    background:  rgb(0,100,0);
+    background:  rgb(0,0,0);
 }
 img{
 	width: 100px;
@@ -164,3 +182,4 @@ img{
     align-items: center;
     display: flex;
 }
+< meta name="viewport" content="width= device-width, initial-scale=1.0">
