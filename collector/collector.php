@@ -1,14 +1,14 @@
 <html>
   <head>
     <title> Collector </title>
-    <link href="../css/style_collector.css" rel="stylesheet"> 
+    <link href="style_collector.css" rel="stylesheet"> 
   </head>
 
   <body>
     
     <div class="menu_bar">
         <ul>
-            <li><a href="../php/logout_back.php" class = "link">Logout</a></li>
+            <li><a href="../logout_back.php" class = "link">Logout</a></li>
         </ul>
     </div>
     <div class="form-box">
@@ -65,7 +65,7 @@
     ?>
         <h1 class="B">Transaction To Approve</h1>
         
-        <form class="output-group" action="../php/collector_back.php" method="POST" >     
+        <form class="output-group" action="collector_back.php" method="POST" >     
             
 
             <div class="container">
