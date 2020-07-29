@@ -3,7 +3,7 @@
     $accountno = $_POST["accountno"];
     $type = $_POST["type"];
     $amount = $_POST["amount"];
-    $db = new PDO("mysql:host=localhost;dbname=oms","root","");
+    $db = new PDO("mysql:host=localhost;dbname=mfs","root","");
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         try 
         { 
