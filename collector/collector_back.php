@@ -19,7 +19,7 @@
             $query = $db->query("UPDATE transactions SET Status='Approved' WHERE Transaction_ID='{$trno}'");
             echo "<script type='text/javascript' >
             alert('Transaction Approved Successfully')
-            document.location='../php/collector.php'
+            document.location='collector.php'
             </script>";
         }
         catch(PDOException $e)
