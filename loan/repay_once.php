@@ -11,24 +11,39 @@
         $db = new PDO("mysql:host=localhost;dbname=mfs","root","");
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $querySql = $db->query("SELECT * FROM interests WHERE Type = 'Loan' ");
+    try{
+        $querySql = $db->query("SELECT * FROM interests WHERE Type = 'Loan' LIMIT 1");
         $row = $querySql->fetch();
-        $r = $row['rate'];
+        $r = $row['Rate'];
         
-        $query = $db->query("SELECT * FROM loan where account_no= '".$_SESSION["account"]."'");
+        $query = $db->query("SELECT * FROM loan WHERE Account_No= '".$_SESSION["account"]."'");
         $row = $query->fetch();
 
-            $n = $row['installments'];
-            $principal = $row['amount'];
-            $id = $row['loan_id'];
+            $n = $row['Installments'];
+            $principal = $row['Amount'];
+            $id = $row['Loan_Id'];
             $rate = ($r/12) / 100 ;
 
-            $difference = round(dateDiff($date,$row["creation_date"])/30);      //No. of months 
-            $remaining = $row["installments"] - $difference;                     //Remaining duration of loan
+            $difference = round(dateDiff($date,$row["Creation_Date"])/30);      //No. of months 
+            $remaining = $row["Installments"] - $difference;                     //Remaining duration of loan
 
             $emi = round(( $principal * $rate * pow(( 1 + $rate), $n) / ( pow(( 1 + $rate), $n ) - 1 ) ));
             $emi = $emi * $remaining;
 
-            $sql = $db->query("UPDATE Account SET balance= balance - '" .$emi. "' WHERE account_no= '".$_SESSION["account"]."'");
+            $queryStr1 = $db->query("SELECT Balance FROM accounts WHERE Account_No= '".$_SESSION["account"]."'");	//Get current balance of the account
+	        $row2 = $queryStr1->fetch();
+
+            $sql = $db->query("UPDATE accounts SET Balance= '".$row2['Balance']."' - '" .$emi. "' WHERE Account_No= '".$_SESSION["account"]."'");
             $sql->execute();
+
+            //Delete entry from Loan table
+	        $queryStr = "DELETE FROM loan WHERE Loan_Id='". $id ."'";
+	        $query = $db->prepare($queryStr);
+	        $query->execute();
+        }
+        catch(PDOException $e)
+        {
+	        echo $e->getMessage();
+        }
+    header('location:loan.php');
 ?>

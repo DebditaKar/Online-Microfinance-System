@@ -10,11 +10,9 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 try
 {
-	$queryStr = "INSERT INTO td(account_no,amount,tenure,creation_date) VALUES(?,?,?,?)";
-	//$queryStr = "INSERT INTO td(amount,tenure,creation_date) VALUES(?,?,?)";
+	$queryStr = "INSERT INTO td(Account_No,Amount,Tenure,Creation_Date) VALUES(?,?,?,?)";
 	$query = $db->prepare($queryStr);
 	$query->execute([$_SESSION["account"],$amount,$tenure,$date]);
-	//$query->execute([$amount,$tenure,$date]);
 }
 catch(PDOException $e)
 {

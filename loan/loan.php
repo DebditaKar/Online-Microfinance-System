@@ -4,8 +4,8 @@ session_start();
 $db = new PDO('mysql:host=localhost;dbname=mfs', 'root', '');
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-//$sql=$db->prepare("select * FROM loan where account_no= '".$_SESSION["account"]."'");
-$sql=$db->prepare("select * FROM loan LIMIT 1");
+$sql=$db->prepare("SELECT * FROM Loan WHERE Account_No= '".$_SESSION["account"]."'");
+
 $sql->execute(); 
 $count = $sql->rowCount();
 $row = $sql->fetch();
@@ -26,7 +26,7 @@ $row = $sql->fetch();
   <body>
     <div class="menu_bar">
             <ul>
-                <li><a href="../main_page/main.php">Home</a></li>
+                <li><a href="../main/main.php">Home</a></li>
                <li><a href="#">Transaction</a>
                     <div class="sub_menu">
                         <ul>
@@ -81,11 +81,11 @@ $row = $sql->fetch();
                         <?php
 	                    $pdo = new PDO('mysql:host=localhost;dbname=mfs', 'root', '');
 
-                        $sql="SELECT tenure FROM interests WHERE type='loan'";
+                        $sql="SELECT Tenure FROM Interests WHERE Type='Loan'";
                         $query=$pdo->query($sql);
 	                    foreach ($pdo->query($sql) as $row)//Array or records stored in $row
 		                {
-			            echo "<option value=$row[tenure]>$row[tenure]</option>"; 
+			            echo "<option value=$row[Tenure]>$row[Tenure]</option>"; 
 		                }
 	                    ?>
                     </select>
@@ -117,8 +117,7 @@ $row = $sql->fetch();
         <!--IF active loan exists-->
         <div id="output-group" class="output-group">
             <?php 
-            $sql=$db->prepare("select * FROM loan LIMIT 1");
-            //$sql=$db->prepare("select * FROM loan where account_no= '".$_SESSION["account"]."'");
+            $sql=$db->prepare("SELECT * FROM loan WHERE Account_No= '".$_SESSION["account"]."'");
             $sql->execute();
             $row = $sql->fetch();?>
 
@@ -127,22 +126,22 @@ $row = $sql->fetch();
 				<col class=w50>
 				<tr>
 					<td>Loan ID</td>
-					<td><input type="number" id="loan-id" value="<?php echo $row['loan_id']; ?>" disabled></td>
+					<td><input type="number" id="loan-id" value="<?php echo $row['Loan_Id']; ?>" disabled></td>
 				</tr>
 				<tr>
 					<td>Amount</td>
-					<td><input type="number" id="amount1" value="<?php echo $row['amount']; ?>" disabled></td>
+					<td>₹ <input type="number" id="amount1" value="<?php echo $row['Amount']; ?>" disabled></td>
 				</tr>
 				<tr>
 					<td>Installments</td>
-					<td><input type="number" id="inst" value="<?php echo $row['installments']; ?>" disabled></td>
+					<td><input type="number" id="inst" value="<?php echo $row['Installments']; ?>" disabled></td>
 				</tr>						
 				<tr>
 					<td>Creation Date</td>
-					<td><input type="date" id="creation-date" value="<?php echo $row['creation_date']; ?>" disabled></td>
+					<td><input type="date" id="creation-date" value="<?php echo $row['Creation_Date']; ?>" disabled></td>
 				</tr>
             </table>
-            <button type="button" name="repay" id="repay" class="button button2">REPAY LOAN AT ONCE</button>
+            <button type="button" name="repay" id="repay" class="button button2" onclick="location.href='repay_once.php'">REPAY LOAN AT ONCE</button>
         </div>       
 
         <!--Bottom border block-->
@@ -176,11 +175,11 @@ $row = $sql->fetch();
                         	<?php
 	                    		$pdo = new PDO('mysql:host=localhost;dbname=mfs', 'root', '');
 
-                        		$sql="SELECT tenure,rate FROM interests WHERE type='loan'";
+                        		$sql="SELECT Tenure,Rate FROM interests WHERE Type='Loan'";
                         		$query=$pdo->query($sql);
 	                    		foreach ($pdo->query($sql) as $row)//Array or records stored in $row
 		                		{
-			            			echo "<option value=$row[tenure]>$row[tenure]</option>"; 
+			            			echo "<option value=$row[Tenure]>$row[Tenure]</option>"; 
 		                		}
 	                    	?>
                     		</select>
@@ -189,7 +188,7 @@ $row = $sql->fetch();
 					<tr>
 						<td>Interest Rate</td>
 						<!--<td><input id=rate onchange=emi();></td>-->
-						<td><input id=rate value="<?php echo $row['rate']; ?>" disabled></td>
+						<td><input id=rate value="<?php echo $row['Rate']; ?>" disabled></td>
 					</tr>						
 					<tr>
 						<td><button id="reset" class="button button2 buttonModal" type=reset>Reset</button></td>

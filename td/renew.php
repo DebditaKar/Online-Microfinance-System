@@ -7,16 +7,21 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 try
 {	
-	$sql = $db->query("SELECT * FROM td WHERE td_id='". $id ."'");
+	$sql = $db->query("SELECT * FROM td WHERE Td_Id='". $id ."'");
     $row = $sql->fetch();
-	$creation = $row['creation_date'];
-	$tenure = $row['tenure'];
+	$creation = $row['Creation_Date'];
+	$tenure = $row['Tenure'];
+	$amount = $row['Amount'];
+
+	//get TD interest rate
+	$querySql = $db->query("SELECT * FROM interests WHERE Type= 'TermDeposit' AND Tenure= '". $tenure ."'");
+    $row = $querySql->fetch();
+	$rate = $row['Rate'];
 
 	$td_amount = $amount*pow((1+($rate/100)), $tenure);
-	
-	
+
 	//renew TD with current date and previous amount with interest.
-	$queryStr = "UPDATE `td` SET `creation_date`='". $date ."' AND amount = '" . $td_amount . "' WHERE `td_id`='". $id ."'";
+	$queryStr = "UPDATE td SET Amount = '" . $td_amount . "' , Creation_Date = '". $date ."' WHERE Td_ID = '". $id ."'";
 	$query = $db->prepare($queryStr);
 	$query->execute();
 }

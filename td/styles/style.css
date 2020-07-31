@@ -139,15 +139,10 @@ body {
     color: rgba(255,255,255, 0.9);
     -webkit-text-stroke-width: 2px; 
     -webkit-text-stroke-color: rgba(1, 152, 117, 1);
-
-    /*position: absolute;
-    top: 25%;
-    left: 64%;
-    transform: translate( -50%, -50% );*/
 }
 
 .information {
-    font-size:1.4vw;
+    font-size:1.3vw;
     font-weight: 200;
     text-align: left;
     margin: 0px 0px 15px 0px;
@@ -156,11 +151,6 @@ body {
     text-align: right;
     -webkit-text-stroke-width: 1px; 
     -webkit-text-stroke-color: rgba(34, 34, 34,0.8);
-
-    /*position: absolute;
-    top: 40%;
-    left: 60%;
-    transform: translate( -50%, -50% );*/
 }
 /*---------------------------------------------------------*/
 
@@ -303,8 +293,8 @@ h3 {
     font-size: 14px;
     transition-duration: 0.4s;
     cursor: pointer;
-    padding: 8px 16px;
-    margin: 4px 2px;
+    padding: 1px 10px;
+    margin: 0;
     background-color: white;
     color: black;
     border: 1px solid rgb(204, 64, 46);
@@ -322,8 +312,8 @@ h3 {
     font-size: 14px;
     transition-duration: 0.4s;
     cursor: pointer;
-    padding: 8px 16px;
-    margin: 4px 2px;
+    padding: 1px 10px;
+    margin: 0;
     background-color: white;
     color: black;
     border: 1px solid rgba(1, 152, 117, 1);
@@ -509,13 +499,19 @@ a:active {
 }
 /* Modal header */
 .modal-header {
-  padding: 2px 16px;
+  padding: 8px 16px;
   background-color: rgba(12, 12, 12, 0.9);
   color: white;
 }
+h3.header {
+  font-size:1.8vw;
+  text-align: left;
+  margin: 0px 0px 5px 0px;
+  padding: 2px 4px;    
+  color: rgba(255,255,255, 0.6);
+}
 /* Modal Content/Box */
 .modal-content {
-  
   position: relative;
   background-color: #fefefe;
   margin: 10% auto;       /* 10% from the top and centered */

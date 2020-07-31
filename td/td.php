@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Term Deposit</title>
- 
+    
+    <link rel = "icon" href = "images/favicon.png" type = "image/x-icon">
     <link href="styles/style.css?v=<?php echo time(); ?>" rel="stylesheet"> 
   </head>
 
@@ -69,7 +70,7 @@
                         $query=$pdo->query($sql);
 	                    foreach ($pdo->query($sql) as $row)//Array or records stored in $row
 		                {
-			                echo "<option value=$row[Tenure]>$row[Tenure] Month(s)</option>"; 
+			                echo "<option value=$row[Tenure]>$row[Tenure] Year(s)</option>"; 
 		                }
 	                    ?>
                     </select>
@@ -100,8 +101,7 @@
                     <th>AMOUNT</th>
                     <th>TENURE(years)</th>
                     <th>CREATION DATE</th>
-                    <th>BREAK</th>
-                    <th>RENEW</th>
+                    <th>MANAGE</th>
                 </tr>
                 </thead>
 
@@ -109,23 +109,25 @@
                 <?php 
 					$pdo = new PDO('mysql:host=localhost;dbname=mfs', 'root', '');
 
-					$sql="select * FROM td where Account_No= '".$_SESSION["account"]."'";
+					$sql="SELECT * FROM td WHERE Account_No= '".$_SESSION["account"]."'";
 					$query=$pdo->query($sql);
 					foreach($pdo->query($sql) as $row){
-                        $exp = date('Y-m-d', strtotime($row['Creation_Date']. "+ {$row['Tenure']} years"));
+                        $exp = date('Y-m-d', strtotime($row['Creation_Date']. "+ {$row['Tenure']} years")); //Get expiration date
+                        $lower = date('Y-m-d', strtotime($row['Creation_Date']. "+6 months"))               //Set TD locking period
 						?>
 						<tr>
 							<td> <?php echo $row['TD_ID']; ?></td>
                             <td> ₹<?php echo $row['Amount']; ?></td>
                             <td> <?php echo $row['Tenure']; ?></td>
                             <td> <?php echo $row['Creation_Date']; ?></td>
+                            <?php if($date < $exp and $date > $lower)
+                            {?>
                             <td><button class="button3" onclick="alert('Selected term deposit has been closed.')"><a href="break.php?id=<?php echo $row['TD_ID'];?>">BREAK</a></button></td>
-                            
+                            <?php } ?> 
                             <?php if($date >= $exp)
                             {?>
-                            <td><button class="button4" id="renew" onclick="alert('Selected term deposit has been renewed.')"><a href="renew.php?id=<?php echo $row['td_id'];?>">RENEW</a></button></td>
+                            <td><button class="button4" id="renew" onclick="alert('Selected term deposit has been renewed.')"><a href="renew.php?id=<?php echo $row['TD_ID'];?>">RENEW</a></button></td>
                             <?php } ?> 
-
                         </tr>
 						<?php
 
@@ -135,34 +137,6 @@
             </table>
         </div>
         <!------------------------------------------->
-
-        <!--Manage TD block------------------------->
-        <!--<div class="block1">
-            <h1 class="A">Manage Term Deposit</h1>
-        </div>  
-        <div class="select">
-            <label for="slct" class="label-field">Term Deposit to manage</label> 
-            <select name="slct" class="slct" id="slct">
-              <option selected disabled>Select TD</option>
-              <?php
-	                $pdo = new PDO('mysql:host=localhost;dbname=mfs', 'root', '');
-
-                    $sql="select TD_ID FROM td WHERE Account_No= '".$_SESSION["account"]."'";
-                    $query=$pdo->query($sql);
-	                foreach ($pdo->query($sql) as $row)//Array or records stored in $row
-		            {
-			            echo "<option value=$row[TD_ID]>$row[TD_ID]</option>"; 
-		            }
-	         ?>
-            </select>
-          </div>
-        
-        <div class="flex-container3">
-            <button type="button" name="info" class="button button2">BREAK</button>
-            
-            <button type="button" name="create" class="button button2">RENEW</button>
-        </div>
-        <!------------------------------------------>
         <div class="block3"></div>
     </div> 
 
@@ -172,7 +146,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h3>Interest Rates</h3>
+                <h3 class="header">Interest Rates</h3>
             </div>
             
             <!--interest rates -->
@@ -189,7 +163,7 @@
                 <?php 
 					$pdo = new PDO('mysql:host=localhost;dbname=mfs', 'root', '');
 
-					$sql="select Tenure,Rate FROM interests where Type='TermDeposit'";
+					$sql="SELECT Tenure,Rate FROM interests WHERE type='TermDeposit'";
 					$query=$pdo->query($sql);
 					foreach($pdo->query($sql) as $row){
 						?>
