@@ -21,7 +21,7 @@
                     <div class="sub_menu">
                         <ul>
                             <li><a href="../Create Transaction/Create_transaction.php">Create</a></li>
-                            <li><a href="../My Transactions/My_transactions.php">View</a></li>
+                            <li><a href="../My Transaction/My_transactions.php">View</a></li>
                         </ul>
                     </div>
                </li>
@@ -66,7 +66,7 @@
                         <?php
 	                    $pdo = new PDO('mysql:host=localhost;dbname=mfs', 'root', '');
 
-                        $sql="SELECT Tenure FROM interests WHERE Type='TermDeposit'";
+                        $sql="SELECT Tenure FROM interests WHERE Type='Term Deposit'";
                         $query=$pdo->query($sql);
 	                    foreach ($pdo->query($sql) as $row)//Array or records stored in $row
 		                {
@@ -122,11 +122,11 @@
                             <td> <?php echo $row['Creation_Date']; ?></td>
                             <?php if($date < $exp and $date > $lower)
                             {?>
-                            <td><button class="button3" onclick="alert('Selected term deposit has been closed.')"><a href="break.php?id=<?php echo $row['TD_ID'];?>">BREAK</a></button></td>
+                            <td><button class="button3"><a href="break.php?id=<?php echo $row['TD_ID'];?>">BREAK</a></button></td>
                             <?php } ?> 
                             <?php if($date >= $exp)
                             {?>
-                            <td><button class="button4" id="renew" onclick="alert('Selected term deposit has been renewed.')"><a href="renew.php?id=<?php echo $row['TD_ID'];?>">RENEW</a></button></td>
+                            <td><button class="button4" id="renew"><a href="renew.php?id=<?php echo $row['TD_ID'];?>">RENEW</a></button></td>
                             <?php } ?> 
                         </tr>
 						<?php
@@ -163,7 +163,7 @@
                 <?php 
 					$pdo = new PDO('mysql:host=localhost;dbname=mfs', 'root', '');
 
-					$sql="SELECT Tenure,Rate FROM interests WHERE type='TermDeposit'";
+					$sql="SELECT Tenure,Rate FROM interests WHERE type='Term Deposit'";
 					$query=$pdo->query($sql);
 					foreach($pdo->query($sql) as $row){
 						?>

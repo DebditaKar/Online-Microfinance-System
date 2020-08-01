@@ -1,11 +1,5 @@
 <?php
-    //$today_day = date("d");
-    //echo $today_day+1;
     $today= date('d/m/Y');
-    //echo $today;
-    //$today_cd=("+1 days", $today);
-    //$today_date = date("d/m/Y", $today_cd);
-    //echo $today_date;
     $db = new PDO("mysql:host=localhost;dbname=mfs","root","");
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         try 
@@ -16,18 +10,17 @@
                 $creation_date=$row['Creation_Date'];
                 $account=$row['Account_No'];
                 $tenure=($row['Tenure']);
-                $amount=$row['Amount'];//Term Deposit to be taken from the account
-                $years=$tenure/12;//tenure 
+                $amount=$row['Amount'];//Term Deposit to be taken from the account 
                 $timestamp = strtotime($creation_date);
-                $mature_date=strtotime("+$years years", $timestamp);
+                $mature_date=strtotime("+$tenure years", $timestamp);
                 $break_date=strtotime("+1 days", $mature_date);
                 $break_date = date("d/m/Y", $break_date);
                 if($break_date == $today) 
                 {
-                    $query = $db->query("SELECT * FROM interests WHERE Type='TermDeposit' AND Tenure='{$tenure}'");
+                    $query = $db->query("SELECT * FROM interests WHERE Type='Term Deposit' AND Tenure='{$tenure}'");
                     $row = $query->fetch();
                     $rate = $row['Rate'];
-                    $td_amount=$amount*pow((1+($rate/100)), $years);
+                    $td_amount=$amount*pow((1+($rate/100)), $tenure);
                     $query = $db->query("SELECT * FROM accounts WHERE Account_No='{$account}'");
                     $row = $query->fetch();
                     $balance = $row['Balance']+$td_amount;

@@ -4,8 +4,8 @@ session_start();
 $db = new PDO('mysql:host=localhost;dbname=mfs', 'root', '');
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$sql=$db->prepare("SELECT * FROM loan WHERE Account_No= '".$_SESSION["account"]."'");
-
+//$sql=$db->prepare("select * FROM loan where account_no= '".$_SESSION["account"]."' LIMIT 1");
+$sql=$db->prepare("select * FROM loan LIMIT 1");
 $sql->execute(); 
 $count = $sql->rowCount();
 $row = $sql->fetch();
@@ -18,7 +18,7 @@ $row = $sql->fetch();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Loan</title>
-
+    
     <link rel = "icon" href = "images/icon.png" type = "image/x-icon">
     <link href="styles/style.css?v=<?php echo time(); ?>" rel="stylesheet"> 
   </head>
@@ -26,12 +26,12 @@ $row = $sql->fetch();
   <body>
     <div class="menu_bar">
             <ul>
-                <li><a href="../main/main.php">Home</a></li>
+                <li><a href="../main_page/main.php">Home</a></li>
                <li><a href="#">Transaction</a>
                     <div class="sub_menu">
                         <ul>
                             <li><a href="../Create Transaction/Create_transaction.php">Create</a></li>
-                            <li><a href="../My Transaction/My_transactions.php">View</a></li>
+                            <li><a href="../My Transactions/My_transactions.php">View</a></li>
                         </ul>
                     </div>
                </li>
@@ -81,11 +81,11 @@ $row = $sql->fetch();
                         <?php
 	                    $pdo = new PDO('mysql:host=localhost;dbname=mfs', 'root', '');
 
-                        $sql="SELECT Tenure FROM interests WHERE Type='Loan'";
+                        $sql="SELECT tenure FROM interests WHERE type='loan'";
                         $query=$pdo->query($sql);
 	                    foreach ($pdo->query($sql) as $row)//Array or records stored in $row
 		                {
-			            echo "<option value=$row[Tenure]>$row[Tenure]</option>"; 
+			            echo "<option value=$row[tenure]>$row[tenure]</option>"; 
 		                }
 	                    ?>
                     </select>
@@ -113,37 +113,31 @@ $row = $sql->fetch();
             <img class="icon" src="images/icon.png" alt="icon">
             <h3 class="n">No active loan for this account.<h3>
         </div>
-
         <!--IF active loan exists-->
-        <div id="output-group" class="output-group">
-            <?php 
-            $sql=$db->prepare("SELECT * FROM loan WHERE Account_No= '".$_SESSION["account"]."'");
-            $sql->execute();
-            $row = $sql->fetch();?>
-
-            <table class="main2">
-			    <col class=w50>
-				<col class=w50>
-				<tr>
-					<td>Loan ID</td>
-					<td><input type="number" id="loan-id" value="<?php echo $row['Loan_Id']; ?>" disabled></td>
-				</tr>
-				<tr>
-					<td>Amount</td>
-					<td>₹ <input type="number" id="amount1" value="<?php echo $row['Amount']; ?>" disabled></td>
-				</tr>
-				<tr>
-					<td>Installments</td>
-					<td><input type="number" id="inst" value="<?php echo $row['Installments']; ?>" disabled></td>
-				</tr>						
-				<tr>
-					<td>Creation Date</td>
-					<td><input type="date" id="creation-date" value="<?php echo $row['Creation_Date']; ?>" disabled></td>
-				</tr>
-            </table>
-            <button type="button" name="repay" id="repay" class="button button2" onclick="location.href='repay_once.php'">REPAY LOAN AT ONCE</button>
-        </div>       
-
+        <form class="output-group" id="output">
+            <div class="flex-container4 ">
+                <div class="display">
+                    <label  class="label-field">Loan ID
+                        <input type="number" id="loan-id" class="display-field" value="<?php echo $row['loan_id']; ?>" disabled>
+                    </label>
+                </div>
+                <div class="display">
+                    <label  class="label-field">Amount
+                        <input type="number" id="amount1" class="display-field" value="<?php echo $row['amount']; ?>" disabled>
+                    </label>
+                </div>
+                <div class="display">
+                    <label  class="label-field">Installments
+                        <input type="number" id="inst" class="display-field" value="<?php echo $row['installments']; ?>" disabled>
+                    </label>
+                </div>
+                <div class="display">
+                    <label  class="label-field">Creation Date
+                        <input type="date" id="creation-date" class="display-field" value="<?php echo $row['creation_date']; ?>" disabled>
+                    </label>
+                </div>
+            </div>
+            <button type="button" name="repay" id="repay" class="button button2">REPAY LOAN AT ONCE</button>
         <!--Bottom border block-->
         <div class="block3"></div>
     </div> 
@@ -155,7 +149,7 @@ $row = $sql->fetch();
             
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h3 class="header">EMI CALCULATOR</h3>
+                <h3>EMI CALCULATOR</h3>
             </div>
             
             <!--calculate emi -->
@@ -175,11 +169,11 @@ $row = $sql->fetch();
                         	<?php
 	                    		$pdo = new PDO('mysql:host=localhost;dbname=mfs', 'root', '');
 
-                        		$sql="SELECT Tenure,Rate FROM interests WHERE Type='Loan'";
+                        		$sql="SELECT tenure,rate FROM interests WHERE type='loan'";
                         		$query=$pdo->query($sql);
 	                    		foreach ($pdo->query($sql) as $row)//Array or records stored in $row
 		                		{
-			            			echo "<option value=$row[Tenure]>$row[Tenure]</option>"; 
+			            			echo "<option value=$row[tenure]>$row[tenure]</option>"; 
 		                		}
 	                    	?>
                     		</select>
@@ -188,7 +182,7 @@ $row = $sql->fetch();
 					<tr>
 						<td>Interest Rate</td>
 						<!--<td><input id=rate onchange=emi();></td>-->
-						<td><input id=rate value="<?php echo $row['Rate']; ?>" disabled></td>
+						<td><input id=rate value="<?php echo $row['rate']; ?>" disabled></td>
 					</tr>						
 					<tr>
 						<td><button id="reset" class="button button2 buttonModal" type=reset>Reset</button></td>
@@ -211,13 +205,14 @@ $row = $sql->fetch();
             </div>
         </div>
     </div>
+    </form>
     <!---------------------------------------------->
     <script>
         var check = "<?php echo $count; ?>";
         if(check == 0)
         {
             document.getElementById("noLoan").style.visibility = "visible";
-            document.getElementById("output-group").style.display = "none";
+            document.getElementById("output").style.display = "none";
         }
         else if(check == 1)
         {
@@ -227,6 +222,23 @@ $row = $sql->fetch();
             document.getElementById("create").classList.remove('button2');
         }
     </script>
+    <script>
+	function emi()
+	{
+		if(document.getElementById('amount2').value==null || document.getElementById('amount2').value.length==0 || document.getElementById('installment2').value==null) 
+			{document.getElementById('emi1').value="Data Required.";}
+		else 
+			{
+				var emi='';
+				var princ1= document.getElementById('amount2').value;
+				var term1= document.getElementById('installment2').value;
+				var intr1=document.getElementById('rate').value / 1200;
+				document.getElementById('emi1').value =Math.round(princ1 * intr1 / (1-(Math.pow(1/(1 + intr1), term1)))*100)/100; 
+				document.getElementById('total').value= Math.round((document.getElementById('emi1').value * document.getElementById('installment2').value)*100)/100;
+				document.getElementById('total_inte').value=Math.round((document.getElementById('total').value*1 - document.getElementById('amount2').value*1)*100)/100;
+			}
+	}
+	</script>
     <script src="scripts/main.js"></script>
     </body>
 </html>
